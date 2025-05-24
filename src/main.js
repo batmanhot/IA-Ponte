@@ -23,28 +23,36 @@ form.addEventListener('submit', async e => {
 
   submitBtn.disabled = true
 
-  const result = streamText({
-      //model: openrouter('google/gemini-2.5-pro-exp-03-25:free'),
-      //model: openrouter('deepseek/deepseek-chat-v3-0324:free'),
-      //model: openrouter('google/gemma-3-4b-it:free'),
-      model: openrouter('meta-llama/llama-3.3-70b-instruct:free'),
-      prompt,
-      // system: 'Eres un niño de 3 años',
-       system: 'Eres un adulto de 50 años',
-      //system: 'Eres un abuelo de 90 años',
-      // system: 'Eres un ejecutivo de una empresa transnacional',
-      //system: 'Eres un gato',
-      temperature: 0
-  })
+  try {
+      debugger
+      
+      const result = streamText({
+          // model: openrouter('google/gemini-2.5-pro-exp-03-25:free'),
+           model: openrouter('deepseek/deepseek-chat-v3-0324:free'),
+          // model: openrouter('google/gemma-3-4b-it:free'),
+          // model: openrouter('meta-llama/llama-3.3-70b-instruct:free'),
+          prompt,
+          // system: 'Eres un niño de 3 años',
+          system: 'Eres un adulto de 50 años',
+          //system: 'Eres un abuelo de 90 años',
+          // system: 'Eres un ejecutivo de una empresa transnacional',
+          //system: 'Eres un gato',
+          temperature: 0
+      }) 
 
-  while(app.firstChild) {
-    app.removeChild(app.firstChild)
-  }
+      while(app.firstChild) {
+        app.removeChild(app.firstChild)
+      }
 
-  for await (const text of result.textStream ) {
-      app.append(text)
+      for await (const text of result.textStream ) {
+          app.append(text)
+      }
+      submitBtn.disabled = false
+
+  } catch (error) {
+      console.log("No se puede ejecutar ",error)
+      return
   }
-  submitBtn.disabled = false
 
 
 })
